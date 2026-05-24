@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Time</title>
+<title>Hours</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1469,6 +1469,7 @@
 
     .modal-handle { display: none; }
   }
+
 </style>
 </head>
 <body>
@@ -1479,7 +1480,7 @@
   <header>
     <div class="brand">
       <span class="brand-icon">⏱️</span>
-      <span class="brand-name">Time</span>
+      <span class="brand-name">Hours</span>
     </div>
     <div class="header-pill idle" id="headerPill">
       <span class="dot"></span>
@@ -2101,7 +2102,7 @@ function tick() {
   if (hpt) hpt.textContent = fmtShort(elapsed);
 
   const proj = projectById(state.activeTimer.projectId);
-  document.title = `⏱ ${fmtShort(elapsed)} · ${proj ? proj.name : 'Time'}`;
+  document.title = `⏱ ${fmtShort(elapsed)} · ${proj ? proj.name : 'Hours'}`;
 
   const liveEl = document.getElementById('live-' + state.activeTimer.projectId);
   if (liveEl) liveEl.textContent = fmtHM(elapsed);
@@ -2120,7 +2121,7 @@ function updateHeaderPill() {
   } else {
     pill.classList.add('idle');
     pill.style.display = 'none';
-    document.title = 'Time';
+    document.title = 'Hours';
   }
 }
 
