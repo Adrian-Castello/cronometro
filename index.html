@@ -6,7 +6,7 @@
 
 <!-- PWA / iOS App (fórmula Kaizen) -->
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Hours">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="application-name" content="Hours">
@@ -91,7 +91,7 @@
     z-index: 1;
     max-width: 480px;
     margin: 0 auto;
-    padding: 22px 20px 130px;
+    padding: calc(22px + env(safe-area-inset-top)) calc(20px + env(safe-area-inset-right)) calc(130px + env(safe-area-inset-bottom)) calc(20px + env(safe-area-inset-left));
     min-height: 100vh;
   }
 
@@ -1189,7 +1189,7 @@
     /* App ancho centrado, una sola columna (sin sidebar) */
     .app {
       max-width: 1080px;
-      padding: 40px 32px 80px;
+      padding: calc(40px + env(safe-area-inset-top)) calc(32px + env(safe-area-inset-right)) calc(80px + env(safe-area-inset-bottom)) calc(32px + env(safe-area-inset-left));
     }
 
     /* ===== HEADER (igual que móvil pero más ancho y respirado) ===== */
