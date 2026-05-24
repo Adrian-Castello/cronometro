@@ -1155,212 +1155,71 @@
   ::-webkit-scrollbar-thumb { background: var(--muted-2); border-radius: 100px; }
   ::-webkit-scrollbar-track { background: transparent; }
 
-  /* Utilidades de visibilidad — ocultar es la única que tocamos para evitar pisar grid/flex */
-  .desktop-only { display: none !important; }
-  /* En desktop, las desktop-only se muestran (se restaura su display por defecto)
-     y las mobile-only se ocultan. Lo hacemos dentro del @media abajo. */
-
-  /* By default (mobile), grouping wrappers don't add anything */
-  .stats-row-1 { display: contents; }
-  .stats-charts-row { display: contents; }
+  /* Wrappers de stats — invisibles en móvil (los hijos heredan el flujo) */
+  .stats-row-1, .stats-charts-row { display: contents; }
   .stats-section-head { display: none; }
+  .desktop-only { display: none !important; }
 
   /* ============================================================ */
-  /* ==================  DESKTOP (≥ 980px)  ===================== */
+  /* ==================  ESCRITORIO  (≥ 980px)  ================= */
   /* ============================================================ */
-
-  /* Hide sidebar by default on mobile */
-  .sidebar { display: none; }
-
   @media (min-width: 980px) {
-    body { font-size: 15px; }
 
     /* Utilidades de visibilidad para desktop */
     .desktop-only { display: revert !important; }
     .mobile-only,
-    .kpi-row.mobile-only,
-    .stats-row-1.mobile-only,
-    .stats-charts-row.mobile-only { display: none !important; }
-    /* Casos específicos donde necesitan display especial */
+    .kpi-row.mobile-only { display: none !important; }
     .kpi-row.desktop-only { display: grid !important; }
     .stats-section-head.desktop-only { display: flex !important; }
+    .stats-side-kpis.desktop-only { display: flex !important; }
 
-    /* App becomes a grid: sidebar + main */
+    /* App ancho centrado, una sola columna (sin sidebar) */
     .app {
-      max-width: 1320px;
-      padding: 32px 32px 60px;
-      display: grid;
-      grid-template-columns: 280px minmax(0, 1fr);
-      gap: 32px;
-      align-items: start;
-      min-height: 100vh;
+      max-width: 1080px;
+      padding: 40px 32px 80px;
     }
 
-    /* Mobile header + tab bar hidden on desktop (sidebar takes over) */
-    header { display: none !important; }
-    .tabs-wrap { display: none !important; }
-
-    /* ===== SIDEBAR (replaces header+tabs on desktop) ===== */
-    .sidebar {
-      display: block;
-      position: sticky;
-      top: 32px;
-      background: var(--surface);
-      border-radius: 28px;
-      padding: 26px 22px;
-      box-shadow: var(--shadow-card);
+    /* ===== HEADER (igual que móvil pero más ancho y respirado) ===== */
+    header {
+      max-width: 100%;
+      justify-content: center;
+      gap: 16px;
+      margin: 0 auto 28px;
     }
 
-    .sb-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 0 6px 22px;
-      border-bottom: 1px solid var(--line);
-      margin-bottom: 20px;
+    .brand-icon {
+      font-size: 36px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--b-lilac);
+      display: inline-grid;
+      place-items: center;
+      box-shadow: var(--shadow-pill);
     }
 
-    .sb-brand-icon { font-size: 32px; line-height: 1; }
-    .sb-brand-name {
-      font-weight: 800;
-      font-size: 24px;
-      letter-spacing: -0.03em;
+    .brand-name {
+      font-size: 30px;
     }
 
-    .sb-nav {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
+    /* ===== TABS (pill horizontal, centradas, igual que móvil) ===== */
+    .tabs-wrap {
+      max-width: 540px;
+      margin: 0 auto 40px;
     }
 
-    .sb-tab {
-      display: flex;
-      align-items: center;
-      gap: 13px;
-      width: 100%;
-      padding: 13px 16px;
-      border: none;
-      background: transparent;
-      border-radius: 14px;
-      font-family: inherit;
-      font-weight: 700;
+    .tabs { padding: 5px; }
+
+    .tab {
+      padding: 13px 20px;
       font-size: 15px;
-      cursor: pointer;
-      color: var(--muted);
-      text-align: left;
-      letter-spacing: -0.01em;
-      transition: background 0.15s, color 0.15s;
     }
 
-    .sb-tab:hover { background: var(--bg); color: var(--ink); }
-    .sb-tab.active { background: var(--ink); color: white; }
-
-    .sb-tab-icon {
-      width: 22px;
-      text-align: center;
-      font-size: 17px;
-      line-height: 1;
-    }
-
-    /* Sidebar live "running" card */
-    .sb-status {
-      margin-top: 22px;
-      padding-top: 22px;
-      border-top: 1px solid var(--line);
-    }
-
-    .sb-running {
-      display: none;
-      background: var(--ink);
-      color: white;
-      border-radius: 18px;
-      padding: 16px;
-      cursor: pointer;
-      transition: transform 0.15s;
-    }
-    .sb-running.show { display: block; }
-    .sb-running:hover { transform: translateY(-1px); }
-
-    .sb-running-head {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .sb-running-bubble {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      display: grid; place-items: center;
-      font-size: 18px;
-      flex-shrink: 0;
-    }
-
-    .sb-running-info { min-width: 0; flex: 1; }
-    .sb-running-label {
-      font-size: 10px;
-      font-weight: 700;
-      color: rgba(255,255,255,0.65);
-      text-transform: lowercase;
-      letter-spacing: 0.04em;
-      margin-bottom: 1px;
-    }
-    .sb-running-name {
-      font-weight: 800;
-      font-size: 14px;
-      letter-spacing: -0.02em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .sb-running-time {
-      font-weight: 800;
-      font-size: 26px;
-      letter-spacing: -0.04em;
-      font-variant-numeric: tabular-nums;
-      text-align: center;
-      padding: 4px 0 2px;
-    }
-
-    .sb-running-cta {
-      font-size: 11px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.6);
-      text-align: center;
-      margin-top: 6px;
-    }
-
-    .sb-idle {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 16px;
-      background: var(--bg);
-      border-radius: 18px;
-      color: var(--muted);
-      font-weight: 600;
-      font-size: 13px;
-    }
-    .sb-idle.hidden { display: none; }
-
-    .sb-idle-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--muted-2);
-    }
-
-    /* ===== MAIN AREA ===== */
-    .main-area { min-width: 0; }
-
-    /* Hide mobile "running ribbon" on desktop — sidebar handles it */
-    .running-ribbon { display: none !important; }
-
-    /* ===== TIMER PANEL — Hero stage on desktop ===== */
+    /* ===== TIMER PANEL — escenario amplio y respirado ===== */
     .timer-stage {
-      max-width: 760px;
+      max-width: 720px;
       margin: 0 auto;
-      padding: 64px 48px 56px;
+      padding: 60px 48px 52px;
     }
 
     .timer-stage::before {
@@ -1372,75 +1231,82 @@
     .stage-status {
       font-size: 13px;
       padding: 9px 18px 9px 14px;
-      margin-bottom: 36px;
+      margin-bottom: 32px;
     }
 
     .stage-bubble {
-      width: 120px;
-      height: 120px;
-      font-size: 60px;
-      margin-bottom: 24px;
+      width: 116px;
+      height: 116px;
+      font-size: 58px;
+      margin-bottom: 22px;
     }
 
     .stage-project-name {
-      font-size: 36px;
-      margin-bottom: 48px;
+      font-size: 34px;
+      margin-bottom: 44px;
     }
 
     .stage-timer {
-      font-size: clamp(120px, 13vw, 168px);
+      font-size: clamp(120px, 12vw, 160px);
       margin-bottom: 14px;
     }
 
     .stage-started-at {
-      font-size: 15px;
-      margin-bottom: 48px;
+      font-size: 14px;
+      margin-bottom: 44px;
     }
 
-    .stage-actions {
-      max-width: 440px;
-    }
+    .stage-actions { max-width: 420px; }
 
     .stage-actions .pill-btn {
-      padding: 18px 28px;
-      font-size: 17px;
+      padding: 17px 28px;
+      font-size: 16px;
     }
 
     .stage-sub-stats {
-      max-width: 480px;
-      margin-top: 40px;
+      max-width: 460px;
+      margin-top: 36px;
       border-radius: 22px;
     }
 
-    .stage-sub {
-      padding: 20px 24px;
-    }
-
+    .stage-sub { padding: 18px 24px; }
     .stage-sub-label { font-size: 12px; }
     .stage-sub-value { font-size: 22px; }
 
     .timer-empty {
-      max-width: 600px;
+      max-width: 580px;
       margin: 0 auto;
-      padding: 100px 40px;
+      padding: 80px 40px;
     }
 
     .timer-empty-icon {
-      width: 112px; height: 112px;
-      font-size: 56px;
+      width: 112px;
+      height: 112px;
+      font-size: 54px;
       margin-bottom: 22px;
     }
 
-    .timer-empty h3 { font-size: 28px; margin-bottom: 10px; }
+    .timer-empty h3 { font-size: 26px; margin-bottom: 10px; }
     .timer-empty p { font-size: 15px; max-width: 360px; margin-bottom: 28px; }
 
-    /* ===== PROJECTS PANEL — grid 2 columns ===== */
+    /* ===== PROJECTS — grid 2 columnas ===== */
+    .running-ribbon {
+      max-width: 100%;
+      margin: 0 0 20px;
+      padding: 16px 22px;
+      border-radius: 24px;
+    }
+
+    .ribbon-bubble { width: 44px; height: 44px; font-size: 22px; }
+    .ribbon-name { font-size: 17px; }
+    .ribbon-time { font-size: 19px; padding: 9px 14px; }
+
     .section-header {
-      margin: 0 0 24px;
+      margin: 0 0 22px;
       padding: 0;
     }
 
-    .section-title { font-size: 32px; }
+    .section-title { font-size: 30px; }
 
     .section-action {
       font-size: 14px;
@@ -1449,8 +1315,8 @@
 
     .project-list {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
     }
 
     .project-card {
@@ -1464,31 +1330,32 @@
     }
 
     .project-bubble {
-      width: 60px; height: 60px;
-      font-size: 30px;
+      width: 58px; height: 58px;
+      font-size: 29px;
     }
 
-    .project-name { font-size: 21px; }
+    .project-name { font-size: 20px; }
 
-    /* ===== STATS PANEL — Dashboard layout ===== */
+    /* ===== STATS — dashboard ===== */
+
     .stats-section-head {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       padding: 0;
     }
 
     .stats-section-head h2 {
       font-weight: 800;
-      font-size: 32px;
+      font-size: 30px;
       letter-spacing: -0.025em;
     }
 
-    /* Hero gets a big sister: 2 stacked KPIs to its right */
+    /* Row 1: Hero (2 cols) + KPIs side (1 col) — proporción 2:1 */
     .stats-row-1 {
       display: grid;
-      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      grid-template-columns: 2fr 1fr;
       gap: 16px;
       margin-bottom: 16px;
     }
@@ -1508,41 +1375,50 @@
     .hero-marker { width: 32px; height: 32px; font-size: 18px; }
     .hero-pill { font-size: 14px; padding: 10px 16px; }
 
-    /* The 2 stacked KPIs next to hero (Hoy + Racha) */
     .stats-side-kpis {
-      display: grid;
-      grid-template-rows: 1fr 1fr;
+      display: flex;
+      flex-direction: column;
       gap: 16px;
     }
 
     .stats-side-kpis .kpi-mini {
-      padding: 22px;
+      flex: 1;
+      padding: 24px 26px;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      gap: 6px;
     }
 
-    .stats-side-kpis .kpi-mini-value { font-size: 36px; }
-    .stats-side-kpis .kpi-mini-label { font-size: 13px; }
-    .stats-side-kpis .kpi-mini-sub { font-size: 13px; }
+    .stats-side-kpis .kpi-mini-label {
+      font-size: 13px;
+      margin-bottom: 0;
+    }
+    .stats-side-kpis .kpi-mini-value {
+      font-size: 34px;
+      margin-bottom: 2px;
+    }
+    .stats-side-kpis .kpi-mini-sub {
+      font-size: 13px;
+      margin-top: 0;
+    }
 
-    /* Remaining KPI row: Semana / Mes full width (2 cols) */
+    /* Row 2: Semana + Mes — iguales, simétricos (1fr 1fr) */
     .kpi-row {
-      display: grid !important;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
       margin-bottom: 16px;
     }
 
-    .kpi-row .kpi-mini { padding: 22px; }
+    .kpi-row .kpi-mini { padding: 22px 26px; }
     .kpi-row .kpi-mini-value { font-size: 32px; }
     .kpi-row .kpi-mini-label { font-size: 13px; }
     .kpi-row .kpi-mini-sub { font-size: 13px; }
 
-    /* Charts side-by-side: weekly bars + heatmap */
+    /* Row 3: charts lado a lado, mismo 2fr 1fr para alinear todo */
     .stats-charts-row {
       display: grid;
-      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      grid-template-columns: 2fr 1fr;
       gap: 16px;
       margin-bottom: 16px;
     }
@@ -1554,18 +1430,17 @@
     .chart-eyebrow { font-size: 13px; }
     .chart-head { margin-bottom: 24px; }
 
-    .weekly-bars { height: 280px; gap: 10px; }
+    .weekly-bars { height: 260px; gap: 10px; }
+    .month-strip { gap: 8px; }
+    .month-day { font-size: 13px; }
 
-    .month-strip { gap: 10px; }
-    .month-day { font-size: 14px; }
-
-    /* Breakdown full width below */
+    /* Breakdown full width */
     .brk-row { padding: 16px 0; }
     .brk-bubble { width: 48px; height: 48px; font-size: 24px; }
     .brk-name { font-size: 17px; }
     .brk-amount { font-size: 15px; padding: 8px 14px 8px 10px; }
 
-    /* Toast in bottom-right corner */
+    /* Toast esquina inferior derecha */
     .toast {
       left: auto;
       right: 30px;
@@ -1574,7 +1449,7 @@
     }
     .toast.show { transform: translateY(0); }
 
-    /* Modal centered (not bottom sheet) on desktop */
+    /* Modal centrado en desktop, no bottom-sheet */
     .modal-bg {
       align-items: center;
       padding: 20px;
@@ -1599,50 +1474,6 @@
 <body>
 
 <div class="app">
-
-  <!-- ============ DESKTOP SIDEBAR ============ -->
-  <aside class="sidebar desktop-only">
-    <div class="sb-brand">
-      <span class="sb-brand-icon">⏱️</span>
-      <span class="sb-brand-name">Time</span>
-    </div>
-
-    <nav class="sb-nav">
-      <button class="sb-tab active" data-view="timer">
-        <span class="sb-tab-icon">⏱</span>
-        <span>Cronómetro</span>
-      </button>
-      <button class="sb-tab" data-view="projects">
-        <span class="sb-tab-icon">◌</span>
-        <span>Proyectos</span>
-      </button>
-      <button class="sb-tab" data-view="stats">
-        <span class="sb-tab-icon">▦</span>
-        <span>Estadísticas</span>
-      </button>
-    </nav>
-
-    <div class="sb-status">
-      <div class="sb-running" id="sbRunning">
-        <div class="sb-running-head">
-          <div class="sb-running-bubble" id="sbRunningBubble">📚</div>
-          <div class="sb-running-info">
-            <div class="sb-running-label">en directo</div>
-            <div class="sb-running-name" id="sbRunningName">—</div>
-          </div>
-        </div>
-        <div class="sb-running-time" id="sbRunningTime">00:00</div>
-        <div class="sb-running-cta">Pulsa para ir al cronómetro →</div>
-      </div>
-      <div class="sb-idle" id="sbIdle">
-        <span class="sb-idle-dot"></span>
-        <span>Cronómetro en pausa</span>
-      </div>
-    </div>
-  </aside>
-
-  <!-- ============ MAIN AREA ============ -->
-  <div class="main-area">
 
   <!-- HEADER -->
   <header>
@@ -1860,7 +1691,6 @@
     </div>
   </div>
 
-  </div><!-- /.main-area -->
 </div>
 
 <!-- MODAL (sin campo de categoría/cliente) -->
@@ -2017,11 +1847,6 @@ function setupTabs() {
     t.addEventListener('click', () => switchTab(t.dataset.view));
   });
 
-  // Desktop sidebar tabs
-  document.querySelectorAll('.sb-tab').forEach(t => {
-    t.addEventListener('click', () => switchTab(t.dataset.view));
-  });
-
   setTimeout(position, 50);
   window.addEventListener('resize', position);
   window._positionIndicator = position;
@@ -2030,7 +1855,6 @@ function setupTabs() {
 function switchTab(view) {
   currentView = view;
   document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.view === view));
-  document.querySelectorAll('.sb-tab').forEach(x => x.classList.toggle('active', x.dataset.view === view));
   document.getElementById('timerPanel').classList.toggle('active', view === 'timer');
   document.getElementById('projectsPanel').classList.toggle('active', view === 'projects');
   document.getElementById('statsPanel').classList.toggle('active', view === 'stats');
@@ -2038,7 +1862,6 @@ function switchTab(view) {
   if (view === 'stats') renderStats();
   if (view === 'timer') renderTimerStage();
   updateRunningRibbon();
-  updateSidebarRunning();
 }
 
 function renderTimerStage() {
