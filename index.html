@@ -7,8 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="apple-touch-icon" href="time-app-icon-512.png">
-<link rel="icon" href="time-app-icon-256.png">
 <style>
   :root {
     --bg: #F5F2EE;
@@ -20,9 +18,11 @@
     --muted: #8E8E8E;
     --muted-2: #B8B4AC;
     --line: rgba(0,0,0,0.06);
+
     --accent-green: #C8E96F;
     --accent-green-deep: #8DAB3C;
     --accent-red: #E97C6B;
+
     --b-rose: #F4C5C0;
     --b-cream: #F5DFB8;
     --b-mint: #C7E8D6;
@@ -31,9 +31,10 @@
     --b-sky: #C6DBE8;
     --b-sage: #D4E0BC;
     --b-rust: #EBC2A8;
+
     --shadow-card: 0 1px 2px rgba(0,0,0,0.03), 0 8px 24px rgba(0,0,0,0.04);
     --shadow-pill: 0 1px 2px rgba(0,0,0,0.04);
-    --shadow-elev: 0 4px 8px rgba(0,0,0,0.04), 0 20px 50px rgba(0,0,0,0.06);
+    --shadow-fab: 0 8px 24px rgba(233, 124, 107, 0.35), 0 2px 6px rgba(0,0,0,0.08);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -81,6 +82,7 @@
     min-height: 100vh;
   }
 
+  /* HEADER */
   header {
     display: flex;
     justify-content: space-between;
@@ -89,29 +91,13 @@
     padding: 0 4px;
   }
 
-  .brand { display: flex; align-items: center; gap: 12px; }
-
-  .brand-logo {
-    width: 44px;
-    height: 44px;
-    border-radius: 11px;
-    overflow: hidden;
-    flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-    background: #0F2618;
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand-icon { font-size: 28px; line-height: 1; }
+  .brand-name {
+    font-weight: 800;
+    font-size: 26px;
+    letter-spacing: -0.03em;
   }
-
-  .brand-logo img { width: 100%; height: 100%; display: block; }
-
-  .brand-logo .brand-fallback {
-    width: 100%; height: 100%;
-    display: grid; place-items: center;
-    font-size: 22px; color: var(--b-cream);
-  }
-
-  .brand-text { display: flex; flex-direction: column; line-height: 1; }
-  .brand-name { font-weight: 800; font-size: 22px; letter-spacing: -0.03em; }
-  .brand-tagline { font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 2px; }
 
   .header-pill {
     display: inline-flex;
@@ -133,12 +119,15 @@
     animation: livePulse 1.6s ease-in-out infinite;
   }
   .header-pill.idle { display: none; }
+
   @keyframes livePulse {
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.5; transform: scale(0.7); }
   }
 
+  /* TABS */
   .tabs-wrap { margin-bottom: 24px; padding: 0 4px; }
+
   .tabs {
     display: flex;
     background: var(--surface);
@@ -147,6 +136,7 @@
     box-shadow: var(--shadow-pill);
     position: relative;
   }
+
   .tab {
     flex: 1;
     padding: 11px 12px;
@@ -162,7 +152,9 @@
     z-index: 1;
     white-space: nowrap;
   }
+
   .tab.active { color: white; }
+
   .tab-indicator {
     position: absolute;
     top: 4px;
@@ -174,14 +166,16 @@
     z-index: 0;
   }
 
+  /* PANELS */
   .panel { display: none; }
   .panel.active { display: block; animation: fadeInPanel 0.3s ease; }
+
   @keyframes fadeInPanel {
     from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* TIMER */
+  /* TIMER PANEL */
   .timer-empty {
     text-align: center;
     padding: 60px 24px;
@@ -190,6 +184,7 @@
     box-shadow: var(--shadow-card);
     margin-top: 16px;
   }
+
   .timer-empty-icon {
     width: 88px; height: 88px;
     border-radius: 50%;
@@ -198,13 +193,20 @@
     font-size: 44px;
     margin: 0 auto 18px;
   }
-  .timer-empty h3 { font-weight: 800; font-size: 22px; letter-spacing: -0.025em; margin-bottom: 8px; }
+
+  .timer-empty h3 {
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: -0.025em;
+    margin-bottom: 8px;
+  }
+
   .timer-empty p {
     color: var(--muted);
     font-size: 14px;
     font-weight: 500;
     margin-bottom: 22px;
-    max-width: 320px;
+    max-width: 280px;
     margin-left: auto;
     margin-right: auto;
   }
@@ -219,6 +221,7 @@
     overflow: hidden;
     text-align: center;
   }
+
   .timer-stage::before {
     content: '';
     position: absolute;
@@ -234,6 +237,7 @@
     pointer-events: none;
     transition: background 0.4s ease;
   }
+
   .timer-stage-inner { position: relative; z-index: 1; }
 
   .stage-status {
@@ -249,26 +253,35 @@
     margin-bottom: 28px;
     text-transform: lowercase;
   }
+
   .stage-status .live-dot {
-    width: 7px; height: 7px; border-radius: 50%;
+    width: 7px; height: 7px;
+    border-radius: 50%;
     background: var(--accent-red);
     animation: livePulse 1.6s ease-in-out infinite;
   }
-  .stage-status.paused .live-dot { background: var(--muted-2); animation: none; }
+
+  .stage-status.paused .live-dot {
+    background: var(--muted-2);
+    animation: none;
+  }
+
   .stage-status.live { color: var(--ink); background: white; box-shadow: var(--shadow-pill); }
 
   .stage-bubble {
-    width: 88px;
-    height: 88px;
+    width: 88px; height: 88px;
     border-radius: 50%;
     margin: 0 auto 18px;
-    display: grid;
-    place-items: center;
+    display: grid; place-items: center;
     font-size: 44px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.06);
     transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
-  .stage-bubble.pulsing { animation: bubbleBreath 3s ease-in-out infinite; }
+
+  .stage-bubble.pulsing {
+    animation: bubbleBreath 3s ease-in-out infinite;
+  }
+
   @keyframes bubbleBreath {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.04); }
@@ -278,6 +291,7 @@
     font-weight: 800;
     font-size: 22px;
     letter-spacing: -0.025em;
+    color: var(--ink);
     margin-bottom: 32px;
     line-height: 1.15;
   }
@@ -288,8 +302,10 @@
     line-height: 1;
     letter-spacing: -0.07em;
     font-variant-numeric: tabular-nums;
+    color: var(--ink);
     margin-bottom: 6px;
   }
+
   .stage-timer .ms {
     font-size: 0.42em;
     color: var(--muted-2);
@@ -324,7 +340,13 @@
     margin-left: auto;
     margin-right: auto;
   }
-  .stage-sub { background: var(--bg); padding: 14px 18px; text-align: center; }
+
+  .stage-sub {
+    background: var(--bg);
+    padding: 14px 18px;
+    text-align: center;
+  }
+
   .stage-sub-label {
     font-size: 11px;
     color: var(--muted);
@@ -332,13 +354,16 @@
     margin-bottom: 4px;
     text-transform: lowercase;
   }
+
   .stage-sub-value {
     font-weight: 800;
     font-size: 18px;
     letter-spacing: -0.02em;
     font-variant-numeric: tabular-nums;
+    color: var(--ink);
   }
 
+  /* Buttons */
   .pill-btn {
     display: inline-flex;
     align-items: center;
@@ -351,18 +376,41 @@
     border: none;
     border-radius: 100px;
     cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    letter-spacing: -0.01em;
     flex: 1;
   }
-  .pill-btn:active { transform: scale(0.97); }
-  .pill-btn.primary { background: var(--ink); color: white; box-shadow: 0 4px 14px rgba(0,0,0,0.18); }
-  .pill-btn.primary:hover { background: var(--ink-2); }
-  .pill-btn.danger { background: var(--accent-red); color: white; box-shadow: 0 4px 14px rgba(233, 124, 107, 0.35); }
-  .pill-btn.ghost { background: var(--surface); color: var(--ink); box-shadow: var(--shadow-pill); }
-  .pill-btn.ghost:hover { background: var(--surface-soft); }
-  .pill-btn.lg { padding: 16px 24px; font-size: 16px; }
 
-  /* PROJECTS */
+  .pill-btn:active { transform: scale(0.97); }
+
+  .pill-btn.primary {
+    background: var(--ink);
+    color: white;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+  }
+
+  .pill-btn.primary:hover { background: var(--ink-2); }
+
+  .pill-btn.danger {
+    background: var(--accent-red);
+    color: white;
+    box-shadow: 0 4px 14px rgba(233, 124, 107, 0.35);
+  }
+
+  .pill-btn.ghost {
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: var(--shadow-pill);
+  }
+
+  .pill-btn.ghost:hover { background: var(--surface-soft); }
+
+  .pill-btn.lg {
+    padding: 16px 24px;
+    font-size: 16px;
+  }
+
+  /* PROJECTS PANEL */
   .section-header {
     display: flex;
     justify-content: space-between;
@@ -371,7 +419,13 @@
     margin-bottom: 16px;
     margin-top: 8px;
   }
-  .section-title { font-weight: 800; font-size: 22px; letter-spacing: -0.025em; }
+
+  .section-title {
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: -0.025em;
+  }
+
   .section-action {
     background: var(--surface);
     border: none;
@@ -384,20 +438,25 @@
     box-shadow: var(--shadow-pill);
     transition: transform 0.15s;
   }
+
   .section-action:active { transform: scale(0.96); }
 
-  .project-list { display: flex; flex-direction: column; gap: 12px; }
+  .project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
 
   .project-card {
     background: var(--surface);
     border-radius: 24px;
     padding: 18px;
     box-shadow: var(--shadow-card);
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s ease;
     position: relative;
     overflow: hidden;
   }
-  .project-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-elev); }
+
   .project-card.running::before {
     content: '';
     position: absolute;
@@ -412,15 +471,17 @@
     gap: 14px;
     margin-bottom: 14px;
   }
+
   .project-bubble {
     width: 52px; height: 52px;
     border-radius: 50%;
-    display: grid;
-    place-items: center;
+    display: grid; place-items: center;
     font-size: 26px;
     flex-shrink: 0;
   }
+
   .project-info { flex: 1; min-width: 0; }
+
   .project-name {
     font-weight: 800;
     font-size: 19px;
@@ -440,12 +501,25 @@
     padding: 7px 12px 7px 8px;
     font-weight: 700;
     font-size: 14px;
+    color: var(--ink);
     flex-shrink: 0;
     white-space: nowrap;
   }
-  .project-amount-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
-  .project-amount-pill.live { background: var(--accent-red); color: white; }
-  .project-amount-pill.live .dot { background: white; animation: livePulse 1.6s ease-in-out infinite; }
+
+  .project-amount-pill .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+  }
+
+  .project-amount-pill.live {
+    background: var(--accent-red);
+    color: white;
+  }
+
+  .project-amount-pill.live .dot {
+    background: white;
+    animation: livePulse 1.6s ease-in-out infinite;
+  }
 
   .project-row-2 {
     display: flex;
@@ -466,37 +540,49 @@
     color: var(--ink-2);
     white-space: nowrap;
   }
-  .mini-pill .lbl { color: var(--muted); font-size: 11px; font-weight: 600; }
+
+  .mini-pill .lbl {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+  }
 
   .project-progress { margin-top: 12px; }
+
   .progress-track {
     height: 6px;
     background: var(--bg);
     border-radius: 100px;
     overflow: hidden;
   }
+
   .progress-fill {
     height: 100%;
     border-radius: 100px;
     transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .card-actions { display: flex; gap: 8px; margin-top: 14px; }
+  .card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
   .card-actions .pill-btn { flex: 1; }
 
   .icon-btn {
-    width: 44px;
-    height: 44px;
+    width: 44px; height: 44px;
     border-radius: 50%;
     background: var(--bg);
     border: none;
     cursor: pointer;
-    display: grid;
-    place-items: center;
+    display: grid; place-items: center;
+    color: var(--ink);
     font-size: 16px;
     transition: all 0.15s;
     flex-shrink: 0;
   }
+
   .icon-btn:hover { background: var(--bg-2); }
   .icon-btn:active { transform: scale(0.94); }
 
@@ -507,31 +593,34 @@
     border-radius: 28px;
     box-shadow: var(--shadow-card);
   }
+
   .empty-emoji {
     font-size: 48px;
     margin-bottom: 14px;
     display: inline-block;
     background: var(--b-mint);
-    width: 88px;
-    height: 88px;
+    width: 88px; height: 88px;
     border-radius: 50%;
     line-height: 88px;
   }
+
   .empty-state h3 {
     font-weight: 800;
     font-size: 22px;
     margin-bottom: 8px;
     letter-spacing: -0.02em;
   }
+
   .empty-state p {
     color: var(--muted);
     margin-bottom: 22px;
     font-size: 14px;
     font-weight: 500;
   }
+
   .empty-state .pill-btn { max-width: 240px; margin: 0 auto; }
 
-  /* STATS */
+  /* STATS PANEL */
   .hero-card {
     background: var(--surface);
     border-radius: 28px;
@@ -541,20 +630,33 @@
     position: relative;
     overflow: hidden;
   }
-  .hero-eyebrow { font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
-  .hero-number-row { display: flex; align-items: baseline; gap: 4px; margin-bottom: 14px; }
+
+  .hero-eyebrow {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .hero-number-row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-bottom: 14px;
+  }
+
   .hero-marker {
     width: 28px; height: 28px;
     border-radius: 50%;
     background: var(--accent-green);
     color: var(--ink);
-    display: grid;
-    place-items: center;
+    display: grid; place-items: center;
     font-weight: 800;
     font-size: 16px;
     margin-right: 6px;
     align-self: center;
   }
+
   .hero-number {
     font-weight: 800;
     font-size: clamp(46px, 11vw, 64px);
@@ -562,8 +664,20 @@
     line-height: 1;
     font-variant-numeric: tabular-nums;
   }
-  .hero-unit { font-weight: 700; font-size: 22px; color: var(--muted-2); }
-  .hero-pills-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .hero-unit {
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--muted-2);
+    letter-spacing: -0.02em;
+  }
+
+  .hero-pills-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
   .hero-pill {
     display: inline-flex;
     align-items: center;
@@ -573,8 +687,14 @@
     padding: 8px 14px;
     font-weight: 700;
     font-size: 13px;
+    color: var(--ink);
   }
-  .hero-pill.dark { background: var(--ink); color: white; }
+
+  .hero-pill.dark {
+    background: var(--ink);
+    color: white;
+  }
+
   .hero-pill .pill-dot {
     width: 6px; height: 6px;
     border-radius: 50%;
@@ -587,13 +707,21 @@
     gap: 10px;
     margin-bottom: 14px;
   }
+
   .kpi-mini {
     background: var(--surface);
     border-radius: 22px;
     padding: 18px;
     box-shadow: var(--shadow-card);
   }
-  .kpi-mini-label { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 6px; }
+
+  .kpi-mini-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
   .kpi-mini-value {
     font-weight: 800;
     font-size: 26px;
@@ -601,7 +729,13 @@
     line-height: 1;
     font-variant-numeric: tabular-nums;
   }
-  .kpi-mini-sub { font-size: 12px; color: var(--muted); font-weight: 600; margin-top: 4px; }
+
+  .kpi-mini-sub {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-top: 4px;
+  }
 
   .chart-card {
     background: var(--surface);
@@ -610,14 +744,26 @@
     box-shadow: var(--shadow-card);
     margin-bottom: 14px;
   }
+
   .chart-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 18px;
   }
-  .chart-eyebrow { font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 2px; }
-  .chart-title { font-weight: 800; font-size: 19px; letter-spacing: -0.02em; }
+
+  .chart-eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 2px;
+  }
+
+  .chart-title {
+    font-weight: 800;
+    font-size: 19px;
+    letter-spacing: -0.02em;
+  }
 
   .weekly-bars {
     display: grid;
@@ -626,6 +772,7 @@
     height: 200px;
     align-items: end;
   }
+
   .day-col-x {
     display: flex;
     flex-direction: column;
@@ -633,6 +780,7 @@
     height: 100%;
     gap: 8px;
   }
+
   .day-bar-x {
     width: 100%;
     background: var(--bg);
@@ -644,10 +792,13 @@
     min-height: 18px;
     transition: all 0.4s ease;
   }
+
   .day-bar-x.today { background: var(--ink); }
   .day-col-x.has-data .day-bar-x { background: transparent; }
   .day-col-x.has-data.today .day-bar-x { background: transparent; box-shadow: inset 0 0 0 2px var(--ink); }
+
   .bar-seg-x { width: 100%; transition: height 0.4s ease; }
+
   .day-emoji-x {
     position: absolute;
     bottom: 8px;
@@ -656,22 +807,32 @@
     font-size: 16px;
     z-index: 1;
   }
+
   .day-bottom-x {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 2px;
   }
+
   .day-name-x {
     font-size: 11px;
     font-weight: 700;
     color: var(--muted);
     text-transform: lowercase;
   }
-  .day-total-x { font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  .day-total-x {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+
   .day-col-x.today .day-name-x { color: var(--ink); }
 
   .breakdown-list { display: flex; flex-direction: column; }
+
   .brk-row {
     display: flex;
     align-items: center;
@@ -679,16 +840,19 @@
     padding: 12px 0;
     border-bottom: 1px solid var(--line);
   }
+
   .brk-row:last-child { border-bottom: none; }
+
   .brk-bubble {
     width: 44px; height: 44px;
     border-radius: 50%;
-    display: grid;
-    place-items: center;
+    display: grid; place-items: center;
     font-size: 22px;
     flex-shrink: 0;
   }
+
   .brk-body { flex: 1; min-width: 0; }
+
   .brk-name {
     font-weight: 800;
     font-size: 16px;
@@ -697,6 +861,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
   .brk-amount {
     background: var(--bg);
     border-radius: 100px;
@@ -709,6 +874,7 @@
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
   }
+
   .brk-amount .d { width: 6px; height: 6px; border-radius: 50%; }
 
   .month-strip {
@@ -717,6 +883,7 @@
     gap: 8px;
     margin-top: 8px;
   }
+
   .month-day-label {
     text-align: center;
     font-size: 11px;
@@ -725,12 +892,12 @@
     text-transform: lowercase;
     padding-bottom: 6px;
   }
+
   .month-day {
     aspect-ratio: 1;
     border-radius: 50%;
     background: var(--bg);
-    display: grid;
-    place-items: center;
+    display: grid; place-items: center;
     font-size: 13px;
     font-weight: 700;
     color: var(--muted);
@@ -738,6 +905,7 @@
     transition: transform 0.15s;
     font-variant-numeric: tabular-nums;
   }
+
   .month-day.has-data { color: var(--ink); }
   .month-day.today { background: var(--ink); color: white; }
   .month-day.future { opacity: 0.35; }
@@ -753,58 +921,11 @@
     color: var(--muted);
     font-weight: 600;
   }
+
   .heat-legend .levels { display: flex; gap: 4px; }
   .heat-legend .levels > div { width: 16px; height: 16px; border-radius: 50%; }
 
-  .running-ribbon {
-    display: none;
-    background: var(--ink);
-    color: white;
-    border-radius: 22px;
-    padding: 14px 18px;
-    margin-bottom: 16px;
-    cursor: pointer;
-    align-items: center;
-    gap: 12px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
-    transition: transform 0.15s;
-  }
-  .running-ribbon:active { transform: scale(0.98); }
-  .running-ribbon.show { display: flex; }
-  .ribbon-bubble {
-    width: 38px; height: 38px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    font-size: 20px;
-    flex-shrink: 0;
-  }
-  .ribbon-body { flex: 1; min-width: 0; }
-  .ribbon-label {
-    font-size: 11px;
-    font-weight: 700;
-    color: rgba(255,255,255,0.7);
-    text-transform: lowercase;
-    margin-bottom: 1px;
-  }
-  .ribbon-name {
-    font-weight: 800;
-    font-size: 15px;
-    letter-spacing: -0.02em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .ribbon-time {
-    font-weight: 800;
-    font-size: 17px;
-    font-variant-numeric: tabular-nums;
-    background: rgba(255,255,255,0.12);
-    padding: 7px 12px;
-    border-radius: 100px;
-    white-space: nowrap;
-  }
-
+  /* MODAL */
   .modal-bg {
     position: fixed;
     inset: 0;
@@ -816,8 +937,11 @@
     align-items: flex-end;
     z-index: 100;
   }
+
   .modal-bg.active { display: flex; animation: fadeIn 0.2s ease; }
+
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
   .modal {
     background: var(--bg);
     border-radius: 32px 32px 0 0;
@@ -828,15 +952,17 @@
     overflow-y: auto;
     animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
+
   @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
   .modal-handle {
-    width: 40px;
-    height: 5px;
+    width: 40px; height: 5px;
     background: var(--muted-2);
     border-radius: 100px;
     margin: 0 auto 22px;
     opacity: 0.5;
   }
+
   .modal h3 {
     font-weight: 800;
     font-size: 26px;
@@ -844,6 +970,7 @@
     margin-bottom: 4px;
     padding: 0 4px;
   }
+
   .modal-sub {
     font-size: 14px;
     color: var(--muted);
@@ -851,6 +978,7 @@
     padding: 0 4px;
     font-weight: 500;
   }
+
   .form-group {
     margin-bottom: 12px;
     background: var(--surface);
@@ -858,6 +986,7 @@
     padding: 14px 16px;
     box-shadow: var(--shadow-pill);
   }
+
   .form-group label {
     display: block;
     font-size: 12px;
@@ -865,6 +994,7 @@
     color: var(--muted);
     margin-bottom: 6px;
   }
+
   .form-input {
     width: 100%;
     font-family: inherit;
@@ -877,7 +1007,9 @@
     outline: none;
     letter-spacing: -0.02em;
   }
+
   .form-input::placeholder { color: var(--muted-2); font-weight: 600; }
+
   .picker-card {
     background: var(--surface);
     border-radius: 18px;
@@ -885,13 +1017,20 @@
     box-shadow: var(--shadow-pill);
     margin-bottom: 12px;
   }
+
   .picker-card-label {
     font-size: 12px;
     font-weight: 700;
     color: var(--muted);
     margin-bottom: 12px;
   }
-  .emoji-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+
+  .emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+  }
+
   .emoji-pick {
     aspect-ratio: 1;
     border-radius: 50%;
@@ -899,13 +1038,19 @@
     border: none;
     cursor: pointer;
     font-size: 20px;
-    display: grid;
-    place-items: center;
+    display: grid; place-items: center;
     transition: all 0.15s;
   }
+
   .emoji-pick:hover { transform: scale(1.1); }
   .emoji-pick.selected { background: var(--ink); transform: scale(1.05); }
-  .bubble-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+
+  .bubble-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
+  }
+
   .bubble-pick {
     aspect-ratio: 1;
     border-radius: 50%;
@@ -913,14 +1058,22 @@
     cursor: pointer;
     transition: all 0.15s;
   }
+
   .bubble-pick:hover { transform: scale(1.1); }
   .bubble-pick.selected {
     box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--ink);
     transform: scale(1.05);
   }
-  .modal-actions { display: flex; gap: 8px; margin-top: 20px; }
+
+  .modal-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
   .modal-actions .pill-btn { flex: 1; }
 
+  /* TOAST */
   .toast {
     position: fixed;
     bottom: 30px;
@@ -937,252 +1090,68 @@
     transition: all 0.3s ease;
     z-index: 200;
     pointer-events: none;
+    letter-spacing: -0.01em;
   }
+
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  .sidebar { display: none; }
-  .main-area { width: 100%; }
-  .desktop-only { display: none; }
-
-  /* ===== DESKTOP LAYOUT ===== */
-  @media (min-width: 920px) {
-    .app {
-      max-width: 1280px;
-      padding: 32px 32px 60px;
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 36px;
-      align-items: start;
-    }
-
-    header { display: none; }
-    .tabs-wrap { display: none; }
-
-    .sidebar {
-      display: block;
-      position: sticky;
-      top: 32px;
-      padding: 24px 20px;
-      background: var(--surface);
-      border-radius: 28px;
-      box-shadow: var(--shadow-card);
-    }
-
-    .sidebar-brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 4px 8px 22px;
-      border-bottom: 1px solid var(--line);
-      margin-bottom: 18px;
-    }
-    .sidebar-brand .brand-logo {
-      width: 56px;
-      height: 56px;
-      border-radius: 14px;
-    }
-    .sidebar-brand .brand-name { font-size: 24px; }
-
-    .sidebar-nav { display: flex; flex-direction: column; gap: 4px; }
-
-    .sidebar-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 13px 16px;
-      border-radius: 14px;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      font-family: inherit;
-      font-weight: 700;
-      font-size: 15px;
-      color: var(--muted);
-      transition: all 0.15s;
-      text-align: left;
-      letter-spacing: -0.01em;
-    }
-    .sidebar-item:hover { background: var(--bg); color: var(--ink); }
-    .sidebar-item.active { background: var(--ink); color: white; }
-    .sidebar-item .sb-icon {
-      width: 22px;
-      text-align: center;
-      font-size: 16px;
-    }
-
-    .sidebar-status {
-      margin-top: 18px;
-      padding-top: 18px;
-      border-top: 1px solid var(--line);
-    }
-
-    .sidebar-running {
-      display: none;
-      background: var(--ink);
-      color: white;
-      border-radius: 16px;
-      padding: 14px;
-      cursor: pointer;
-      transition: transform 0.15s;
-    }
-    .sidebar-running.show { display: block; }
-    .sidebar-running:hover { transform: translateY(-1px); }
-
-    .sb-running-head {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-    .sb-running-bubble {
-      width: 32px; height: 32px;
-      border-radius: 50%;
-      display: grid; place-items: center;
-      font-size: 16px;
-      flex-shrink: 0;
-    }
-    .sb-running-label {
-      font-size: 10px;
-      font-weight: 700;
-      color: rgba(255,255,255,0.7);
-      text-transform: lowercase;
-    }
-    .sb-running-name {
-      font-weight: 800;
-      font-size: 13px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .sb-running-time {
-      font-weight: 800;
-      font-size: 22px;
-      letter-spacing: -0.03em;
-      font-variant-numeric: tabular-nums;
-      text-align: center;
-      padding: 8px 0 4px;
-    }
-    .sb-running-cta {
-      font-size: 11px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.65);
-      text-align: center;
-    }
-
-    .main-area { min-width: 0; }
-    .running-ribbon { display: none !important; }
-
-    .timer-stage {
-      padding: 70px 40px 56px;
-      max-width: 760px;
-      margin: 24px auto 0;
-    }
-    .timer-stage::before { width: 520px; height: 520px; top: -200px; }
-
-    .stage-bubble {
-      width: 120px; height: 120px;
-      font-size: 60px;
-      margin-bottom: 24px;
-    }
-    .stage-project-name { font-size: 32px; margin-bottom: 48px; }
-    .stage-timer {
-      font-size: clamp(120px, 12vw, 168px);
-      margin-bottom: 12px;
-    }
-    .stage-started-at { font-size: 15px; margin-bottom: 48px; }
-    .stage-actions { max-width: 440px; }
-    .stage-actions .pill-btn { padding: 18px 28px; font-size: 17px; }
-    .stage-sub-stats { max-width: 480px; margin-top: 36px; }
-    .stage-sub { padding: 18px 22px; }
-    .stage-sub-value { font-size: 22px; }
-
-    .timer-empty {
-      padding: 80px 40px;
-      max-width: 600px;
-      margin: 24px auto 0;
-    }
-
-    .stats-section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 20px;
-    }
-    .stats-section-head h2 {
-      font-weight: 800;
-      font-size: 30px;
-      letter-spacing: -0.025em;
-    }
-
-    .section-header { margin-bottom: 24px; padding: 0; }
-    .section-title { font-size: 30px; }
-    .section-action { padding: 11px 18px; }
-
-    .project-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 16px;
-    }
-    .project-card { padding: 22px; }
-    .project-name { font-size: 21px; }
-    .project-bubble { width: 60px; height: 60px; font-size: 30px; }
-
-    .stats-grid-desktop {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-    .hero-card {
-      margin-bottom: 0;
-      padding: 32px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 240px;
-    }
-    .hero-number { font-size: 96px; }
-    .hero-unit { font-size: 32px; }
-
-    .kpi-stacked {
-      display: grid;
-      grid-template-rows: 1fr 1fr;
-      gap: 16px;
-    }
-    .kpi-stacked .kpi-mini { padding: 22px; display: flex; flex-direction: column; justify-content: center; }
-    .kpi-stacked .kpi-mini-value { font-size: 32px; }
-
-    .kpi-row {
-      grid-template-columns: 1fr 1fr 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-    .kpi-row .kpi-mini-value { font-size: 30px; }
-
-    .charts-grid {
-      display: grid;
-      grid-template-columns: 1.6fr 1fr;
-      gap: 16px;
-    }
-    .chart-card { margin-bottom: 16px; padding: 28px; }
-    .chart-title { font-size: 22px; }
-    .weekly-bars { height: 280px; gap: 10px; }
-    .month-strip { gap: 10px; }
-    .month-day { font-size: 14px; }
-
-    .desktop-only { display: block; }
-    .mobile-only { display: none; }
-
-    .toast {
-      left: auto;
-      right: 30px;
-      bottom: 30px;
-      transform: translateY(20px);
-    }
-    .toast.show { transform: translateY(0); }
+  /* Live running ribbon */
+  .running-ribbon {
+    display: none;
+    background: var(--ink);
+    color: white;
+    border-radius: 22px;
+    padding: 14px 18px;
+    margin-bottom: 16px;
+    cursor: pointer;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    transition: transform 0.15s;
   }
 
-  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  .running-ribbon:active { transform: scale(0.98); }
+  .running-ribbon.show { display: flex; }
+
+  .ribbon-bubble {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .ribbon-body { flex: 1; min-width: 0; }
+
+  .ribbon-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.7);
+    text-transform: lowercase;
+    margin-bottom: 1px;
+  }
+
+  .ribbon-name {
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ribbon-time {
+    font-weight: 800;
+    font-size: 17px;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    background: rgba(255,255,255,0.12);
+    padding: 7px 12px;
+    border-radius: 100px;
+    white-space: nowrap;
+  }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-thumb { background: var(--muted-2); border-radius: 100px; }
   ::-webkit-scrollbar-track { background: transparent; }
 </style>
@@ -1191,278 +1160,183 @@
 
 <div class="app">
 
-  <!-- DESKTOP SIDEBAR -->
-  <aside class="sidebar desktop-only">
-    <div class="sidebar-brand">
-      <div class="brand-logo">
-        <img src="time-app-icon-512.png" alt="Time" id="sidebarLogo" onerror="this.parentElement.innerHTML='<div class=brand-fallback>⏱</div>'">
-      </div>
-      <div class="brand-text">
-        <div class="brand-name">Time</div>
-        <div class="brand-tagline">tu tiempo, contigo</div>
-      </div>
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <span class="brand-icon">⏱️</span>
+      <span class="brand-name">Time</span>
+    </div>
+    <div class="header-pill idle" id="headerPill">
+      <span class="dot"></span>
+      <span id="headerPillText">En pausa</span>
+    </div>
+  </header>
+
+  <!-- TABS -->
+  <div class="tabs-wrap">
+    <div class="tabs" id="tabs">
+      <div class="tab-indicator" id="tabIndicator"></div>
+      <button class="tab active" data-view="timer">Cronómetro</button>
+      <button class="tab" data-view="projects">Proyectos</button>
+      <button class="tab" data-view="stats">Estadísticas</button>
+    </div>
+  </div>
+
+  <!-- TIMER PANEL -->
+  <div class="panel active" id="timerPanel">
+    <div class="timer-empty" id="timerEmpty">
+      <div class="timer-empty-icon">⏱️</div>
+      <h3>El cronómetro está en reposo</h3>
+      <p>Elige un proyecto desde la pestaña de Proyectos y pulsa <strong>▶</strong> para empezar.</p>
+      <button class="pill-btn primary" id="goToProjectsBtn" style="max-width: 240px; margin: 0 auto;">Ir a Proyectos</button>
     </div>
 
-    <nav class="sidebar-nav">
-      <button class="sidebar-item active" data-view="timer">
-        <span class="sb-icon">⏱</span>
-        <span>Cronómetro</span>
-      </button>
-      <button class="sidebar-item" data-view="projects">
-        <span class="sb-icon">◦</span>
-        <span>Proyectos</span>
-      </button>
-      <button class="sidebar-item" data-view="stats">
-        <span class="sb-icon">▦</span>
-        <span>Estadísticas</span>
-      </button>
-    </nav>
-
-    <div class="sidebar-status">
-      <div class="sidebar-running" id="sidebarRunning">
-        <div class="sb-running-head">
-          <div class="sb-running-bubble" id="sbRunningBubble">📚</div>
-          <div style="min-width:0; flex:1;">
-            <div class="sb-running-label">en directo</div>
-            <div class="sb-running-name" id="sbRunningName">—</div>
-          </div>
+    <div class="timer-stage" id="timerStage" style="display:none;">
+      <div class="timer-stage-inner">
+        <div class="stage-status paused" id="stageStatus">
+          <span class="live-dot"></span>
+          <span id="stageStatusText">listo para empezar</span>
         </div>
-        <div class="sb-running-time" id="sbRunningTime">00:00</div>
-        <div class="sb-running-cta">Ir al cronómetro →</div>
-      </div>
-    </div>
-  </aside>
 
-  <div class="main-area">
+        <div class="stage-bubble" id="stageBubble">📚</div>
+        <div class="stage-project-name" id="stageProjectName">Proyecto</div>
 
-    <!-- MOBILE HEADER -->
-    <header class="mobile-only">
-      <div class="brand">
-        <div class="brand-logo">
-          <img src="time-app-icon-512.png" alt="Time" id="headerLogo" onerror="this.parentElement.innerHTML='<div class=brand-fallback>⏱</div>'">
+        <div class="stage-timer" id="stageTimer">00:00<span class="ms">:00</span></div>
+        <div class="stage-started-at" id="stageStartedAt">&nbsp;</div>
+
+        <div class="stage-actions" id="stageActions">
+          <button class="pill-btn primary lg" id="stageStartBtn">▶ Iniciar</button>
         </div>
-        <div class="brand-text">
-          <div class="brand-name">Time</div>
-        </div>
-      </div>
-      <div class="header-pill idle" id="headerPill">
-        <span class="dot"></span>
-        <span id="headerPillText">En pausa</span>
-      </div>
-    </header>
 
-    <div class="tabs-wrap mobile-only">
-      <div class="tabs" id="tabs">
-        <div class="tab-indicator" id="tabIndicator"></div>
-        <button class="tab active" data-view="timer">Cronómetro</button>
-        <button class="tab" data-view="projects">Proyectos</button>
-        <button class="tab" data-view="stats">Estadísticas</button>
-      </div>
-    </div>
-
-    <!-- TIMER PANEL -->
-    <div class="panel active" id="timerPanel">
-      <div class="timer-empty" id="timerEmpty">
-        <div class="timer-empty-icon">⏱️</div>
-        <h3>El cronómetro está en reposo</h3>
-        <p>Elige un proyecto desde la pestaña de Proyectos y pulsa <strong>▶</strong> para empezar.</p>
-        <button class="pill-btn primary" id="goToProjectsBtn" style="max-width: 240px; margin: 0 auto;">Ir a Proyectos</button>
-      </div>
-
-      <div class="timer-stage" id="timerStage" style="display:none;">
-        <div class="timer-stage-inner">
-          <div class="stage-status paused" id="stageStatus">
-            <span class="live-dot"></span>
-            <span id="stageStatusText">listo para empezar</span>
+        <div class="stage-sub-stats">
+          <div class="stage-sub">
+            <div class="stage-sub-label">hoy</div>
+            <div class="stage-sub-value" id="stageSubToday">0m</div>
           </div>
-
-          <div class="stage-bubble" id="stageBubble">📚</div>
-          <div class="stage-project-name" id="stageProjectName">Proyecto</div>
-
-          <div class="stage-timer" id="stageTimer">00:00<span class="ms">:00</span></div>
-          <div class="stage-started-at" id="stageStartedAt">&nbsp;</div>
-
-          <div class="stage-actions" id="stageActions">
-            <button class="pill-btn primary lg" id="stageStartBtn">▶ Iniciar</button>
-          </div>
-
-          <div class="stage-sub-stats">
-            <div class="stage-sub">
-              <div class="stage-sub-label">hoy</div>
-              <div class="stage-sub-value" id="stageSubToday">0m</div>
-            </div>
-            <div class="stage-sub">
-              <div class="stage-sub-label">esta semana</div>
-              <div class="stage-sub-value" id="stageSubWeek">0m</div>
-            </div>
+          <div class="stage-sub">
+            <div class="stage-sub-label">esta semana</div>
+            <div class="stage-sub-value" id="stageSubWeek">0m</div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- PROJECTS PANEL -->
-    <div class="panel" id="projectsPanel">
-      <div class="running-ribbon" id="runningRibbon">
-        <div class="ribbon-bubble" id="ribbonBubble">📚</div>
-        <div class="ribbon-body">
-          <div class="ribbon-label">en curso</div>
-          <div class="ribbon-name" id="ribbonName">—</div>
-        </div>
-        <div class="ribbon-time" id="ribbonTime">00:00</div>
+  <!-- PROJECTS PANEL -->
+  <div class="panel" id="projectsPanel">
+    <div class="running-ribbon" id="runningRibbon">
+      <div class="ribbon-bubble" id="ribbonBubble">📚</div>
+      <div class="ribbon-body">
+        <div class="ribbon-label">en curso</div>
+        <div class="ribbon-name" id="ribbonName">—</div>
       </div>
-
-      <div class="section-header">
-        <div class="section-title">Tus proyectos</div>
-        <button class="section-action" id="newProjectBtn">+ Nuevo proyecto</button>
-      </div>
-
-      <div id="projectsContainer"></div>
+      <div class="ribbon-time" id="ribbonTime">00:00</div>
     </div>
 
-    <!-- STATS PANEL -->
-    <div class="panel" id="statsPanel">
-      <div class="running-ribbon" id="runningRibbon2">
-        <div class="ribbon-bubble" id="ribbonBubble2">📚</div>
-        <div class="ribbon-body">
-          <div class="ribbon-label">en curso</div>
-          <div class="ribbon-name" id="ribbonName2">—</div>
-        </div>
-        <div class="ribbon-time" id="ribbonTime2">00:00</div>
+    <div class="section-header">
+      <div class="section-title">Tus proyectos</div>
+      <button class="section-action" id="newProjectBtn">+ Nuevo</button>
+    </div>
+
+    <div id="projectsContainer"></div>
+  </div>
+
+  <!-- STATS PANEL -->
+  <div class="panel" id="statsPanel">
+    <div class="running-ribbon" id="runningRibbon2">
+      <div class="ribbon-bubble" id="ribbonBubble2">📚</div>
+      <div class="ribbon-body">
+        <div class="ribbon-label">en curso</div>
+        <div class="ribbon-name" id="ribbonName2">—</div>
       </div>
+      <div class="ribbon-time" id="ribbonTime2">00:00</div>
+    </div>
 
-      <div class="stats-section-head desktop-only">
-        <h2>Estadísticas</h2>
+    <div class="hero-card">
+      <div class="hero-eyebrow">Tiempo total acumulado</div>
+      <div class="hero-number-row">
+        <span class="hero-marker">+</span>
+        <span class="hero-number" id="heroTotalNumber">0</span>
+        <span class="hero-unit">h</span>
       </div>
-
-      <div class="stats-grid-desktop">
-        <div class="hero-card">
-          <div>
-            <div class="hero-eyebrow">Tiempo total acumulado</div>
-            <div class="hero-number-row">
-              <span class="hero-marker">+</span>
-              <span class="hero-number" id="heroTotalNumber">0</span>
-              <span class="hero-unit">h</span>
-            </div>
-          </div>
-          <div class="hero-pills-row">
-            <div class="hero-pill dark">
-              <span class="pill-dot"></span>
-              <span id="heroSessionsText">0 sesiones</span>
-            </div>
-            <div class="hero-pill">
-              <span id="heroProjectsText">0 proyectos</span>
-            </div>
-          </div>
+      <div class="hero-pills-row">
+        <div class="hero-pill dark">
+          <span class="pill-dot"></span>
+          <span id="heroSessionsText">0 sesiones</span>
         </div>
-
-        <div class="kpi-stacked desktop-only">
-          <div class="kpi-mini">
-            <div class="kpi-mini-label">Racha actual</div>
-            <div class="kpi-mini-value" id="kpiStreakBig">0d</div>
-            <div class="kpi-mini-sub" id="kpiStreakSubBig">empieza hoy</div>
-          </div>
-          <div class="kpi-mini">
-            <div class="kpi-mini-label">Hoy</div>
-            <div class="kpi-mini-value" id="kpiTodayBig">0h</div>
-            <div class="kpi-mini-sub" id="kpiTodaySubBig">sin actividad</div>
-          </div>
+        <div class="hero-pill">
+          <span id="heroProjectsText">0 proyectos</span>
         </div>
-      </div>
-
-      <div class="kpi-row mobile-only">
-        <div class="kpi-mini">
-          <div class="kpi-mini-label">Hoy</div>
-          <div class="kpi-mini-value" id="kpiToday">0h</div>
-          <div class="kpi-mini-sub" id="kpiTodaySub">sin actividad</div>
-        </div>
-        <div class="kpi-mini">
-          <div class="kpi-mini-label">Esta semana</div>
-          <div class="kpi-mini-value" id="kpiWeek">0h</div>
-          <div class="kpi-mini-sub" id="kpiWeekSub">media: —</div>
-        </div>
-        <div class="kpi-mini">
-          <div class="kpi-mini-label">Este mes</div>
-          <div class="kpi-mini-value" id="kpiMonth">0h</div>
-          <div class="kpi-mini-sub" id="kpiMonthSub">media: —</div>
-        </div>
-        <div class="kpi-mini">
-          <div class="kpi-mini-label">Racha</div>
-          <div class="kpi-mini-value" id="kpiStreak">0d</div>
-          <div class="kpi-mini-sub" id="kpiStreakSub">empieza hoy</div>
-        </div>
-      </div>
-
-      <div class="kpi-row desktop-only">
-        <div class="kpi-mini">
-          <div class="kpi-mini-label">Esta semana</div>
-          <div class="kpi-mini-value" id="kpiWeekD">0h</div>
-          <div class="kpi-mini-sub" id="kpiWeekSubD">media: —</div>
-        </div>
-        <div class="kpi-mini">
-          <div class="kpi-mini-label">Este mes</div>
-          <div class="kpi-mini-value" id="kpiMonthD">0h</div>
-          <div class="kpi-mini-sub" id="kpiMonthSubD">media: —</div>
-        </div>
-        <div class="kpi-mini">
-          <div class="kpi-mini-label">Mejor día</div>
-          <div class="kpi-mini-value" id="kpiBestDay">—</div>
-          <div class="kpi-mini-sub" id="kpiBestDaySub">esta semana</div>
-        </div>
-        <div class="kpi-mini">
-          <div class="kpi-mini-label">Top proyecto</div>
-          <div class="kpi-mini-value" id="kpiTopProject" style="font-size: 22px;">—</div>
-          <div class="kpi-mini-sub" id="kpiTopProjectSub">esta semana</div>
-        </div>
-      </div>
-
-      <div class="charts-grid">
-        <div class="chart-card">
-          <div class="chart-head">
-            <div>
-              <div class="chart-eyebrow">Últimos 7 días</div>
-              <div class="chart-title">Distribución semanal</div>
-            </div>
-          </div>
-          <div class="weekly-bars" id="weeklyBars"></div>
-        </div>
-
-        <div class="chart-card">
-          <div class="chart-head">
-            <div>
-              <div class="chart-eyebrow" id="monthEyebrow">—</div>
-              <div class="chart-title">Mapa del mes</div>
-            </div>
-          </div>
-          <div class="month-strip" id="monthStrip"></div>
-          <div class="heat-legend">
-            <span>menos</span>
-            <div class="levels">
-              <div style="background: var(--bg);"></div>
-              <div style="background: var(--b-sage);"></div>
-              <div style="background: var(--b-mint);"></div>
-              <div style="background: var(--accent-green);"></div>
-              <div style="background: var(--accent-green-deep);"></div>
-            </div>
-            <span>más</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="chart-card">
-        <div class="chart-head">
-          <div>
-            <div class="chart-eyebrow">Esta semana</div>
-            <div class="chart-title">Por proyecto</div>
-          </div>
-        </div>
-        <div class="breakdown-list" id="breakdownList"></div>
       </div>
     </div>
 
+    <div class="kpi-row">
+      <div class="kpi-mini">
+        <div class="kpi-mini-label">Hoy</div>
+        <div class="kpi-mini-value" id="kpiToday">0h</div>
+        <div class="kpi-mini-sub" id="kpiTodaySub">sin actividad</div>
+      </div>
+      <div class="kpi-mini">
+        <div class="kpi-mini-label">Esta semana</div>
+        <div class="kpi-mini-value" id="kpiWeek">0h</div>
+        <div class="kpi-mini-sub" id="kpiWeekSub">media: —</div>
+      </div>
+      <div class="kpi-mini">
+        <div class="kpi-mini-label">Este mes</div>
+        <div class="kpi-mini-value" id="kpiMonth">0h</div>
+        <div class="kpi-mini-sub" id="kpiMonthSub">media: —</div>
+      </div>
+      <div class="kpi-mini">
+        <div class="kpi-mini-label">Racha actual</div>
+        <div class="kpi-mini-value" id="kpiStreak">0d</div>
+        <div class="kpi-mini-sub" id="kpiStreakSub">días seguidos</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-head">
+        <div>
+          <div class="chart-eyebrow">Últimos 7 días</div>
+          <div class="chart-title">Distribución semanal</div>
+        </div>
+      </div>
+      <div class="weekly-bars" id="weeklyBars"></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-head">
+        <div>
+          <div class="chart-eyebrow">Esta semana</div>
+          <div class="chart-title">Por proyecto</div>
+        </div>
+      </div>
+      <div class="breakdown-list" id="breakdownList"></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-head">
+        <div>
+          <div class="chart-eyebrow" id="monthEyebrow">—</div>
+          <div class="chart-title">Mapa del mes</div>
+        </div>
+      </div>
+      <div class="month-strip" id="monthStrip"></div>
+      <div class="heat-legend">
+        <span>menos</span>
+        <div class="levels">
+          <div style="background: var(--bg);"></div>
+          <div style="background: var(--b-sage);"></div>
+          <div style="background: var(--b-mint);"></div>
+          <div style="background: var(--accent-green);"></div>
+          <div style="background: var(--accent-green-deep);"></div>
+        </div>
+        <span>más</span>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- MODAL (sin campo de cliente/categoría) -->
+<!-- MODAL (sin campo de categoría/cliente) -->
 <div class="modal-bg" id="modalBg">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -1502,7 +1376,7 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const STORAGE_KEY = 'time_neo_v3';
+const STORAGE_KEY = 'time_neo_v2';
 
 const EMOJIS = ['📚','💻','🎨','✍️','🎵','📷','🎬','🏋️','🧘','🌱','🍳','🎮','🔬','📐','🎓','💼','🏠','💡','🚀','🌟','📝','🎭','🎯','🧩','🪴','📊','🗂️','🎤','🛠️','🧪','🪄','🎻'];
 const BUBBLES = [
@@ -1524,22 +1398,6 @@ let selectedEmoji = EMOJIS[0];
 let selectedBubble = BUBBLES[0].v;
 let tickHandle = null;
 let currentView = 'timer';
-
-// Migrate from older versions if present
-(function migrate(){
-  for (const oldKey of ['time_neo_v2','time_neo_v1']) {
-    if (!localStorage.getItem(STORAGE_KEY)) {
-      const raw = localStorage.getItem(oldKey);
-      if (raw) {
-        try {
-          const parsed = JSON.parse(raw);
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
-          state = loadState();
-        } catch(e) {}
-      }
-    }
-  }
-})();
 
 function loadState() {
   try {
@@ -1618,32 +1476,32 @@ function fmtClock(date) {
 }
 
 function setupTabs() {
-  document.querySelectorAll('.tab').forEach(t => {
-    t.addEventListener('click', () => switchTab(t.dataset.view));
-  });
-  document.querySelectorAll('.sidebar-item').forEach(t => {
-    t.addEventListener('click', () => switchTab(t.dataset.view));
-  });
-  positionIndicator();
-  window.addEventListener('resize', positionIndicator);
-}
-
-function positionIndicator() {
-  const active = document.querySelector('.tab.active');
+  const tabs = document.querySelectorAll('.tab');
   const indicator = document.getElementById('tabIndicator');
-  if (!active || !indicator) return;
-  indicator.style.width = active.offsetWidth + 'px';
-  indicator.style.transform = `translateX(${active.offsetLeft - 4}px)`;
+
+  function position() {
+    const active = document.querySelector('.tab.active');
+    if (!active) return;
+    indicator.style.width = active.offsetWidth + 'px';
+    indicator.style.transform = `translateX(${active.offsetLeft - 4}px)`;
+  }
+
+  tabs.forEach(t => {
+    t.addEventListener('click', () => switchTab(t.dataset.view));
+  });
+
+  setTimeout(position, 50);
+  window.addEventListener('resize', position);
+  window._positionIndicator = position;
 }
 
 function switchTab(view) {
   currentView = view;
   document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.view === view));
-  document.querySelectorAll('.sidebar-item').forEach(x => x.classList.toggle('active', x.dataset.view === view));
   document.getElementById('timerPanel').classList.toggle('active', view === 'timer');
   document.getElementById('projectsPanel').classList.toggle('active', view === 'projects');
   document.getElementById('statsPanel').classList.toggle('active', view === 'stats');
-  positionIndicator();
+  window._positionIndicator && window._positionIndicator();
   if (view === 'stats') renderStats();
   if (view === 'timer') renderTimerStage();
   updateRunningRibbon();
@@ -1670,7 +1528,9 @@ function renderTimerStage() {
   const bubble = document.getElementById('stageBubble');
   bubble.textContent = p.emoji;
   bubble.style.background = p.color;
+
   document.getElementById('stageProjectName').textContent = p.name;
+
   stage.style.setProperty('--stage-glow', p.color);
 
   const todayStart = startOfDay(new Date());
@@ -1710,7 +1570,9 @@ function renderTimerStage() {
       <button class="pill-btn ghost lg" id="stageChangeBtn">Cambiar</button>
       <button class="pill-btn primary lg" id="stageStartBtn">▶ Iniciar</button>
     `;
-    document.getElementById('stageStartBtn').addEventListener('click', () => startTimer(p.id));
+    document.getElementById('stageStartBtn').addEventListener('click', () => {
+      startTimer(p.id);
+    });
     document.getElementById('stageChangeBtn').addEventListener('click', () => {
       state.selectedForTimer = null;
       saveState();
@@ -1793,7 +1655,10 @@ function renderProjects() {
   container.appendChild(list);
 
   list.querySelectorAll('[data-action="play"]').forEach(btn => {
-    btn.addEventListener('click', e => { e.stopPropagation(); playProject(btn.dataset.id); });
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      playProject(btn.dataset.id);
+    });
   });
   list.querySelectorAll('[data-action="stop"]').forEach(btn => {
     btn.addEventListener('click', e => { e.stopPropagation(); stopTimer(); });
@@ -1884,7 +1749,6 @@ function tick() {
   if (liveEl) liveEl.textContent = fmtHM(elapsed);
 
   updateRunningRibbon();
-  updateSidebarRunning();
 }
 
 function updateHeaderPill() {
@@ -1925,25 +1789,6 @@ function updateRunningRibbon() {
       ribbon.classList.remove('show');
     }
   });
-}
-
-function updateSidebarRunning() {
-  const el = document.getElementById('sidebarRunning');
-  if (!el) return;
-  if (!state.activeTimer) {
-    el.classList.remove('show');
-    return;
-  }
-  const p = projectById(state.activeTimer.projectId);
-  if (!p) { el.classList.remove('show'); return; }
-  const elapsed = Math.floor((Date.now() - new Date(state.activeTimer.startISO).getTime()) / 1000);
-  el.classList.add('show');
-  const bubble = document.getElementById('sbRunningBubble');
-  bubble.textContent = p.emoji;
-  bubble.style.background = p.color;
-  document.getElementById('sbRunningName').textContent = p.name;
-  document.getElementById('sbRunningTime').textContent = fmtShort(elapsed);
-  el.onclick = () => switchTab('timer');
 }
 
 document.getElementById('headerPill').addEventListener('click', () => switchTab('timer'));
@@ -2021,7 +1866,7 @@ function saveProject() {
     const p = projectById(editingProjectId);
     p.name = name; p.weeklyGoalHours = goal;
     p.emoji = selectedEmoji; p.color = selectedBubble;
-    delete p.client; // clean up if migrating
+    delete p.client; // limpieza si quedaba de versión anterior
     showToast('Proyecto actualizado');
   } else {
     state.projects.push({
@@ -2084,85 +1929,25 @@ function renderStats() {
   document.getElementById('heroSessionsText').textContent = `${state.sessions.length} sesion${state.sessions.length !== 1 ? 'es' : ''}`;
   document.getElementById('heroProjectsText').textContent = `${state.projects.length} proyecto${state.projects.length !== 1 ? 's' : ''}`;
 
-  const todayProj = new Set(todaySessions.map(s => s.projectId)).size;
-  const todaySub = todayProj > 0 ? `${todayProj} proyecto${todayProj !== 1 ? 's' : ''}` : 'sin actividad';
+  document.getElementById('kpiToday').textContent = fmtHM(todaySec);
+  const tProj = new Set(todaySessions.map(s => s.projectId)).size;
+  document.getElementById('kpiTodaySub').textContent = tProj > 0 ? `${tProj} proyecto${tProj !== 1 ? 's' : ''}` : 'sin actividad';
 
-  ['kpiToday', 'kpiTodayBig'].forEach(id => {
-    const el = document.getElementById(id); if (el) el.textContent = fmtHM(todaySec);
-  });
-  ['kpiTodaySub', 'kpiTodaySubBig'].forEach(id => {
-    const el = document.getElementById(id); if (el) el.textContent = todaySub;
-  });
-  ['kpiWeek', 'kpiWeekD'].forEach(id => {
-    const el = document.getElementById(id); if (el) el.textContent = fmtHM(weekSec);
-  });
-  ['kpiWeekSub', 'kpiWeekSubD'].forEach(id => {
-    const el = document.getElementById(id); if (el) el.textContent = `media: ${fmtHM(weekSec / 7)}`;
-  });
-  ['kpiMonth', 'kpiMonthD'].forEach(id => {
-    const el = document.getElementById(id); if (el) el.textContent = fmtHM(monthSec);
-  });
-  ['kpiMonthSub', 'kpiMonthSubD'].forEach(id => {
-    const el = document.getElementById(id); if (el) el.textContent = `media: ${fmtHM(monthSec / now.getDate())}`;
-  });
+  document.getElementById('kpiWeek').textContent = fmtHM(weekSec);
+  document.getElementById('kpiWeekSub').textContent = `media: ${fmtHM(weekSec / 7)}`;
+
+  document.getElementById('kpiMonth').textContent = fmtHM(monthSec);
+  document.getElementById('kpiMonthSub').textContent = `media: ${fmtHM(monthSec / now.getDate())}`;
 
   const streak = calculateStreak();
-  ['kpiStreak', 'kpiStreakBig'].forEach(id => {
-    const el = document.getElementById(id); if (el) el.textContent = streak + 'd';
-  });
-  ['kpiStreakSub', 'kpiStreakSubBig'].forEach(id => {
-    const el = document.getElementById(id); if (el) el.textContent = streak === 0 ? 'empieza hoy' : 'días seguidos';
-  });
-
-  const bestDay = findBestDay();
-  const bestDayEl = document.getElementById('kpiBestDay');
-  const bestDaySubEl = document.getElementById('kpiBestDaySub');
-  if (bestDayEl && bestDay) {
-    bestDayEl.textContent = fmtHM(bestDay.sec);
-    bestDaySubEl.textContent = bestDay.label;
-  } else if (bestDayEl) {
-    bestDayEl.textContent = '—';
-    bestDaySubEl.textContent = 'sin actividad';
-  }
-
-  const topProjectEl = document.getElementById('kpiTopProject');
-  const topProjectSubEl = document.getElementById('kpiTopProjectSub');
-  if (topProjectEl) {
-    const byProj = {};
-    weekSessions.forEach(s => { byProj[s.projectId] = (byProj[s.projectId] || 0) + s.durationSec; });
-    const sorted = Object.entries(byProj).sort((a,b) => b[1] - a[1]);
-    if (sorted.length > 0) {
-      const top = projectById(sorted[0][0]);
-      if (top) {
-        topProjectEl.innerHTML = `<span style="margin-right:6px;">${top.emoji}</span>${escapeHTML(top.name.length > 10 ? top.name.slice(0,10) + '…' : top.name)}`;
-        topProjectSubEl.textContent = `${fmtHM(sorted[0][1])} esta semana`;
-      }
-    } else {
-      topProjectEl.textContent = '—';
-      topProjectSubEl.textContent = 'sin actividad';
-    }
-  }
+  document.getElementById('kpiStreak').textContent = streak + 'd';
+  document.getElementById('kpiStreakSub').textContent = streak === 0 ? 'empieza hoy' : 'días seguidos';
 
   document.getElementById('monthEyebrow').textContent = `${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
 
   renderWeeklyBars();
   renderBreakdown(weekSessions);
   renderHeatmap(monthSessions);
-}
-
-function findBestDay() {
-  const today = startOfDay(new Date());
-  const dayNames = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-  let best = null;
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(today); d.setDate(d.getDate() - i);
-    const next = new Date(d); next.setDate(next.getDate() + 1);
-    const sec = sumDuration(sessionsBetween(d, next));
-    if (sec > 0 && (!best || sec > best.sec)) {
-      best = { sec, label: dayNames[d.getDay()] };
-    }
-  }
-  return best;
 }
 
 function calculateStreak() {
@@ -2375,7 +2160,6 @@ renderTimerStage();
 restoreTimer();
 updateHeaderPill();
 updateRunningRibbon();
-updateSidebarRunning();
 
 window.addEventListener('beforeunload', saveState);
 </script>
