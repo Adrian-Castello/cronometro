@@ -1154,11 +1154,495 @@
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-thumb { background: var(--muted-2); border-radius: 100px; }
   ::-webkit-scrollbar-track { background: transparent; }
+
+  /* Utilidades de visibilidad — ocultar es la única que tocamos para evitar pisar grid/flex */
+  .desktop-only { display: none !important; }
+  /* En desktop, las desktop-only se muestran (se restaura su display por defecto)
+     y las mobile-only se ocultan. Lo hacemos dentro del @media abajo. */
+
+  /* By default (mobile), grouping wrappers don't add anything */
+  .stats-row-1 { display: contents; }
+  .stats-charts-row { display: contents; }
+  .stats-section-head { display: none; }
+
+  /* ============================================================ */
+  /* ==================  DESKTOP (≥ 980px)  ===================== */
+  /* ============================================================ */
+
+  /* Hide sidebar by default on mobile */
+  .sidebar { display: none; }
+
+  @media (min-width: 980px) {
+    body { font-size: 15px; }
+
+    /* Utilidades de visibilidad para desktop */
+    .desktop-only { display: revert !important; }
+    .mobile-only,
+    .kpi-row.mobile-only,
+    .stats-row-1.mobile-only,
+    .stats-charts-row.mobile-only { display: none !important; }
+    /* Casos específicos donde necesitan display especial */
+    .kpi-row.desktop-only { display: grid !important; }
+    .stats-section-head.desktop-only { display: flex !important; }
+
+    /* App becomes a grid: sidebar + main */
+    .app {
+      max-width: 1320px;
+      padding: 32px 32px 60px;
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 32px;
+      align-items: start;
+      min-height: 100vh;
+    }
+
+    /* Mobile header + tab bar hidden on desktop (sidebar takes over) */
+    header { display: none !important; }
+    .tabs-wrap { display: none !important; }
+
+    /* ===== SIDEBAR (replaces header+tabs on desktop) ===== */
+    .sidebar {
+      display: block;
+      position: sticky;
+      top: 32px;
+      background: var(--surface);
+      border-radius: 28px;
+      padding: 26px 22px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .sb-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 6px 22px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 20px;
+    }
+
+    .sb-brand-icon { font-size: 32px; line-height: 1; }
+    .sb-brand-name {
+      font-weight: 800;
+      font-size: 24px;
+      letter-spacing: -0.03em;
+    }
+
+    .sb-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .sb-tab {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      width: 100%;
+      padding: 13px 16px;
+      border: none;
+      background: transparent;
+      border-radius: 14px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      color: var(--muted);
+      text-align: left;
+      letter-spacing: -0.01em;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .sb-tab:hover { background: var(--bg); color: var(--ink); }
+    .sb-tab.active { background: var(--ink); color: white; }
+
+    .sb-tab-icon {
+      width: 22px;
+      text-align: center;
+      font-size: 17px;
+      line-height: 1;
+    }
+
+    /* Sidebar live "running" card */
+    .sb-status {
+      margin-top: 22px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+    }
+
+    .sb-running {
+      display: none;
+      background: var(--ink);
+      color: white;
+      border-radius: 18px;
+      padding: 16px;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .sb-running.show { display: block; }
+    .sb-running:hover { transform: translateY(-1px); }
+
+    .sb-running-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .sb-running-bubble {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .sb-running-info { min-width: 0; flex: 1; }
+    .sb-running-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.65);
+      text-transform: lowercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 1px;
+    }
+    .sb-running-name {
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sb-running-time {
+      font-weight: 800;
+      font-size: 26px;
+      letter-spacing: -0.04em;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+      padding: 4px 0 2px;
+    }
+
+    .sb-running-cta {
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      margin-top: 6px;
+    }
+
+    .sb-idle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      background: var(--bg);
+      border-radius: 18px;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .sb-idle.hidden { display: none; }
+
+    .sb-idle-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--muted-2);
+    }
+
+    /* ===== MAIN AREA ===== */
+    .main-area { min-width: 0; }
+
+    /* Hide mobile "running ribbon" on desktop — sidebar handles it */
+    .running-ribbon { display: none !important; }
+
+    /* ===== TIMER PANEL — Hero stage on desktop ===== */
+    .timer-stage {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 64px 48px 56px;
+    }
+
+    .timer-stage::before {
+      width: 520px;
+      height: 520px;
+      top: -200px;
+    }
+
+    .stage-status {
+      font-size: 13px;
+      padding: 9px 18px 9px 14px;
+      margin-bottom: 36px;
+    }
+
+    .stage-bubble {
+      width: 120px;
+      height: 120px;
+      font-size: 60px;
+      margin-bottom: 24px;
+    }
+
+    .stage-project-name {
+      font-size: 36px;
+      margin-bottom: 48px;
+    }
+
+    .stage-timer {
+      font-size: clamp(120px, 13vw, 168px);
+      margin-bottom: 14px;
+    }
+
+    .stage-started-at {
+      font-size: 15px;
+      margin-bottom: 48px;
+    }
+
+    .stage-actions {
+      max-width: 440px;
+    }
+
+    .stage-actions .pill-btn {
+      padding: 18px 28px;
+      font-size: 17px;
+    }
+
+    .stage-sub-stats {
+      max-width: 480px;
+      margin-top: 40px;
+      border-radius: 22px;
+    }
+
+    .stage-sub {
+      padding: 20px 24px;
+    }
+
+    .stage-sub-label { font-size: 12px; }
+    .stage-sub-value { font-size: 22px; }
+
+    .timer-empty {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 100px 40px;
+    }
+
+    .timer-empty-icon {
+      width: 112px; height: 112px;
+      font-size: 56px;
+      margin-bottom: 22px;
+    }
+
+    .timer-empty h3 { font-size: 28px; margin-bottom: 10px; }
+    .timer-empty p { font-size: 15px; max-width: 360px; margin-bottom: 28px; }
+
+    /* ===== PROJECTS PANEL — grid 2 columns ===== */
+    .section-header {
+      margin: 0 0 24px;
+      padding: 0;
+    }
+
+    .section-title { font-size: 32px; }
+
+    .section-action {
+      font-size: 14px;
+      padding: 11px 18px;
+    }
+
+    .project-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+    }
+
+    .project-card {
+      padding: 22px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04), 0 16px 40px rgba(0,0,0,0.06);
+    }
+
+    .project-bubble {
+      width: 60px; height: 60px;
+      font-size: 30px;
+    }
+
+    .project-name { font-size: 21px; }
+
+    /* ===== STATS PANEL — Dashboard layout ===== */
+    .stats-section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 24px;
+      padding: 0;
+    }
+
+    .stats-section-head h2 {
+      font-weight: 800;
+      font-size: 32px;
+      letter-spacing: -0.025em;
+    }
+
+    /* Hero gets a big sister: 2 stacked KPIs to its right */
+    .stats-row-1 {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .hero-card {
+      margin-bottom: 0;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 260px;
+    }
+
+    .hero-eyebrow { font-size: 14px; margin-bottom: 8px; }
+    .hero-number { font-size: 104px; }
+    .hero-unit { font-size: 32px; }
+    .hero-marker { width: 32px; height: 32px; font-size: 18px; }
+    .hero-pill { font-size: 14px; padding: 10px 16px; }
+
+    /* The 2 stacked KPIs next to hero (Hoy + Racha) */
+    .stats-side-kpis {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .stats-side-kpis .kpi-mini {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .stats-side-kpis .kpi-mini-value { font-size: 36px; }
+    .stats-side-kpis .kpi-mini-label { font-size: 13px; }
+    .stats-side-kpis .kpi-mini-sub { font-size: 13px; }
+
+    /* Remaining KPI row: Semana / Mes full width (2 cols) */
+    .kpi-row {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .kpi-row .kpi-mini { padding: 22px; }
+    .kpi-row .kpi-mini-value { font-size: 32px; }
+    .kpi-row .kpi-mini-label { font-size: 13px; }
+    .kpi-row .kpi-mini-sub { font-size: 13px; }
+
+    /* Charts side-by-side: weekly bars + heatmap */
+    .stats-charts-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .stats-charts-row .chart-card { margin-bottom: 0; }
+
+    .chart-card { padding: 28px; }
+    .chart-title { font-size: 22px; }
+    .chart-eyebrow { font-size: 13px; }
+    .chart-head { margin-bottom: 24px; }
+
+    .weekly-bars { height: 280px; gap: 10px; }
+
+    .month-strip { gap: 10px; }
+    .month-day { font-size: 14px; }
+
+    /* Breakdown full width below */
+    .brk-row { padding: 16px 0; }
+    .brk-bubble { width: 48px; height: 48px; font-size: 24px; }
+    .brk-name { font-size: 17px; }
+    .brk-amount { font-size: 15px; padding: 8px 14px 8px 10px; }
+
+    /* Toast in bottom-right corner */
+    .toast {
+      left: auto;
+      right: 30px;
+      bottom: 30px;
+      transform: translateY(20px);
+    }
+    .toast.show { transform: translateY(0); }
+
+    /* Modal centered (not bottom sheet) on desktop */
+    .modal-bg {
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal {
+      border-radius: 28px;
+      max-width: 520px;
+      max-height: 88vh;
+      animation: modalFadeIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-handle { display: none; }
+  }
 </style>
 </head>
 <body>
 
 <div class="app">
+
+  <!-- ============ DESKTOP SIDEBAR ============ -->
+  <aside class="sidebar desktop-only">
+    <div class="sb-brand">
+      <span class="sb-brand-icon">⏱️</span>
+      <span class="sb-brand-name">Time</span>
+    </div>
+
+    <nav class="sb-nav">
+      <button class="sb-tab active" data-view="timer">
+        <span class="sb-tab-icon">⏱</span>
+        <span>Cronómetro</span>
+      </button>
+      <button class="sb-tab" data-view="projects">
+        <span class="sb-tab-icon">◌</span>
+        <span>Proyectos</span>
+      </button>
+      <button class="sb-tab" data-view="stats">
+        <span class="sb-tab-icon">▦</span>
+        <span>Estadísticas</span>
+      </button>
+    </nav>
+
+    <div class="sb-status">
+      <div class="sb-running" id="sbRunning">
+        <div class="sb-running-head">
+          <div class="sb-running-bubble" id="sbRunningBubble">📚</div>
+          <div class="sb-running-info">
+            <div class="sb-running-label">en directo</div>
+            <div class="sb-running-name" id="sbRunningName">—</div>
+          </div>
+        </div>
+        <div class="sb-running-time" id="sbRunningTime">00:00</div>
+        <div class="sb-running-cta">Pulsa para ir al cronómetro →</div>
+      </div>
+      <div class="sb-idle" id="sbIdle">
+        <span class="sb-idle-dot"></span>
+        <span>Cronómetro en pausa</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN AREA ============ -->
+  <div class="main-area">
 
   <!-- HEADER -->
   <header>
@@ -1252,25 +1736,49 @@
       <div class="ribbon-time" id="ribbonTime2">00:00</div>
     </div>
 
-    <div class="hero-card">
-      <div class="hero-eyebrow">Tiempo total acumulado</div>
-      <div class="hero-number-row">
-        <span class="hero-marker">+</span>
-        <span class="hero-number" id="heroTotalNumber">0</span>
-        <span class="hero-unit">h</span>
-      </div>
-      <div class="hero-pills-row">
-        <div class="hero-pill dark">
-          <span class="pill-dot"></span>
-          <span id="heroSessionsText">0 sesiones</span>
+    <div class="stats-section-head desktop-only">
+      <h2>Estadísticas</h2>
+    </div>
+
+    <!-- Row 1 (desktop): Hero + 2 KPIs apilados al lado -->
+    <div class="stats-row-1">
+      <div class="hero-card">
+        <div>
+          <div class="hero-eyebrow">Tiempo total acumulado</div>
+          <div class="hero-number-row">
+            <span class="hero-marker">+</span>
+            <span class="hero-number" id="heroTotalNumber">0</span>
+            <span class="hero-unit">h</span>
+          </div>
         </div>
-        <div class="hero-pill">
-          <span id="heroProjectsText">0 proyectos</span>
+        <div class="hero-pills-row">
+          <div class="hero-pill dark">
+            <span class="pill-dot"></span>
+            <span id="heroSessionsText">0 sesiones</span>
+          </div>
+          <div class="hero-pill">
+            <span id="heroProjectsText">0 proyectos</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPIs laterales (Hoy + Racha) — solo desktop, se ocultan en móvil para evitar duplicado -->
+      <div class="stats-side-kpis desktop-only">
+        <div class="kpi-mini">
+          <div class="kpi-mini-label">Hoy</div>
+          <div class="kpi-mini-value" id="kpiTodayBig">0h</div>
+          <div class="kpi-mini-sub" id="kpiTodaySubBig">sin actividad</div>
+        </div>
+        <div class="kpi-mini">
+          <div class="kpi-mini-label">Racha actual</div>
+          <div class="kpi-mini-value" id="kpiStreakBig">0d</div>
+          <div class="kpi-mini-sub" id="kpiStreakSubBig">empieza hoy</div>
         </div>
       </div>
     </div>
 
-    <div class="kpi-row">
+    <!-- KPIs móviles (4 en 2x2) vs desktop (2 en 2x1: Semana + Mes) -->
+    <div class="kpi-row mobile-only">
       <div class="kpi-mini">
         <div class="kpi-mini-label">Hoy</div>
         <div class="kpi-mini-value" id="kpiToday">0h</div>
@@ -1293,16 +1801,54 @@
       </div>
     </div>
 
-    <div class="chart-card">
-      <div class="chart-head">
-        <div>
-          <div class="chart-eyebrow">Últimos 7 días</div>
-          <div class="chart-title">Distribución semanal</div>
-        </div>
+    <div class="kpi-row desktop-only">
+      <div class="kpi-mini">
+        <div class="kpi-mini-label">Esta semana</div>
+        <div class="kpi-mini-value" id="kpiWeekD">0h</div>
+        <div class="kpi-mini-sub" id="kpiWeekSubD">media: —</div>
       </div>
-      <div class="weekly-bars" id="weeklyBars"></div>
+      <div class="kpi-mini">
+        <div class="kpi-mini-label">Este mes</div>
+        <div class="kpi-mini-value" id="kpiMonthD">0h</div>
+        <div class="kpi-mini-sub" id="kpiMonthSubD">media: —</div>
+      </div>
     </div>
 
+    <!-- Charts: bars + heatmap side by side on desktop -->
+    <div class="stats-charts-row">
+      <div class="chart-card">
+        <div class="chart-head">
+          <div>
+            <div class="chart-eyebrow">Últimos 7 días</div>
+            <div class="chart-title">Distribución semanal</div>
+          </div>
+        </div>
+        <div class="weekly-bars" id="weeklyBars"></div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-head">
+          <div>
+            <div class="chart-eyebrow" id="monthEyebrow">—</div>
+            <div class="chart-title">Mapa del mes</div>
+          </div>
+        </div>
+        <div class="month-strip" id="monthStrip"></div>
+        <div class="heat-legend">
+          <span>menos</span>
+          <div class="levels">
+            <div style="background: var(--bg);"></div>
+            <div style="background: var(--b-sage);"></div>
+            <div style="background: var(--b-mint);"></div>
+            <div style="background: var(--accent-green);"></div>
+            <div style="background: var(--accent-green-deep);"></div>
+          </div>
+          <span>más</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Breakdown full width -->
     <div class="chart-card">
       <div class="chart-head">
         <div>
@@ -1312,28 +1858,9 @@
       </div>
       <div class="breakdown-list" id="breakdownList"></div>
     </div>
-
-    <div class="chart-card">
-      <div class="chart-head">
-        <div>
-          <div class="chart-eyebrow" id="monthEyebrow">—</div>
-          <div class="chart-title">Mapa del mes</div>
-        </div>
-      </div>
-      <div class="month-strip" id="monthStrip"></div>
-      <div class="heat-legend">
-        <span>menos</span>
-        <div class="levels">
-          <div style="background: var(--bg);"></div>
-          <div style="background: var(--b-sage);"></div>
-          <div style="background: var(--b-mint);"></div>
-          <div style="background: var(--accent-green);"></div>
-          <div style="background: var(--accent-green-deep);"></div>
-        </div>
-        <span>más</span>
-      </div>
-    </div>
   </div>
+
+  </div><!-- /.main-area -->
 </div>
 
 <!-- MODAL (sin campo de categoría/cliente) -->
@@ -1490,6 +2017,11 @@ function setupTabs() {
     t.addEventListener('click', () => switchTab(t.dataset.view));
   });
 
+  // Desktop sidebar tabs
+  document.querySelectorAll('.sb-tab').forEach(t => {
+    t.addEventListener('click', () => switchTab(t.dataset.view));
+  });
+
   setTimeout(position, 50);
   window.addEventListener('resize', position);
   window._positionIndicator = position;
@@ -1498,6 +2030,7 @@ function setupTabs() {
 function switchTab(view) {
   currentView = view;
   document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.view === view));
+  document.querySelectorAll('.sb-tab').forEach(x => x.classList.toggle('active', x.dataset.view === view));
   document.getElementById('timerPanel').classList.toggle('active', view === 'timer');
   document.getElementById('projectsPanel').classList.toggle('active', view === 'projects');
   document.getElementById('statsPanel').classList.toggle('active', view === 'stats');
@@ -1505,6 +2038,7 @@ function switchTab(view) {
   if (view === 'stats') renderStats();
   if (view === 'timer') renderTimerStage();
   updateRunningRibbon();
+  updateSidebarRunning();
 }
 
 function renderTimerStage() {
@@ -1724,6 +2258,7 @@ function stopTimer(opts = {}) {
   saveState();
 
   updateHeaderPill();
+  updateSidebarRunning();
   if (!opts.skipRerender) {
     renderTimerStage();
     renderProjects();
@@ -1749,6 +2284,7 @@ function tick() {
   if (liveEl) liveEl.textContent = fmtHM(elapsed);
 
   updateRunningRibbon();
+  updateSidebarRunning();
 }
 
 function updateHeaderPill() {
@@ -1789,6 +2325,34 @@ function updateRunningRibbon() {
       ribbon.classList.remove('show');
     }
   });
+}
+
+function updateSidebarRunning() {
+  const running = document.getElementById('sbRunning');
+  const idle = document.getElementById('sbIdle');
+  if (!running || !idle) return;
+
+  if (state.activeTimer) {
+    const p = projectById(state.activeTimer.projectId);
+    if (!p) {
+      running.classList.remove('show');
+      idle.classList.remove('hidden');
+      return;
+    }
+    const elapsed = Math.floor((Date.now() - new Date(state.activeTimer.startISO).getTime()) / 1000);
+    running.classList.add('show');
+    idle.classList.add('hidden');
+
+    const bubble = document.getElementById('sbRunningBubble');
+    bubble.textContent = p.emoji;
+    bubble.style.background = p.color;
+    document.getElementById('sbRunningName').textContent = p.name;
+    document.getElementById('sbRunningTime').textContent = fmtShort(elapsed);
+    running.onclick = () => switchTab('timer');
+  } else {
+    running.classList.remove('show');
+    idle.classList.remove('hidden');
+  }
 }
 
 document.getElementById('headerPill').addEventListener('click', () => switchTab('timer'));
@@ -1931,17 +2495,36 @@ function renderStats() {
 
   document.getElementById('kpiToday').textContent = fmtHM(todaySec);
   const tProj = new Set(todaySessions.map(s => s.projectId)).size;
-  document.getElementById('kpiTodaySub').textContent = tProj > 0 ? `${tProj} proyecto${tProj !== 1 ? 's' : ''}` : 'sin actividad';
+  const todaySub = tProj > 0 ? `${tProj} proyecto${tProj !== 1 ? 's' : ''}` : 'sin actividad';
+  document.getElementById('kpiTodaySub').textContent = todaySub;
+  // Desktop hero side KPIs
+  const kpiTodayBig = document.getElementById('kpiTodayBig');
+  const kpiTodaySubBig = document.getElementById('kpiTodaySubBig');
+  if (kpiTodayBig) kpiTodayBig.textContent = fmtHM(todaySec);
+  if (kpiTodaySubBig) kpiTodaySubBig.textContent = todaySub;
 
   document.getElementById('kpiWeek').textContent = fmtHM(weekSec);
   document.getElementById('kpiWeekSub').textContent = `media: ${fmtHM(weekSec / 7)}`;
+  const kpiWeekD = document.getElementById('kpiWeekD');
+  const kpiWeekSubD = document.getElementById('kpiWeekSubD');
+  if (kpiWeekD) kpiWeekD.textContent = fmtHM(weekSec);
+  if (kpiWeekSubD) kpiWeekSubD.textContent = `media: ${fmtHM(weekSec / 7)}`;
 
   document.getElementById('kpiMonth').textContent = fmtHM(monthSec);
   document.getElementById('kpiMonthSub').textContent = `media: ${fmtHM(monthSec / now.getDate())}`;
+  const kpiMonthD = document.getElementById('kpiMonthD');
+  const kpiMonthSubD = document.getElementById('kpiMonthSubD');
+  if (kpiMonthD) kpiMonthD.textContent = fmtHM(monthSec);
+  if (kpiMonthSubD) kpiMonthSubD.textContent = `media: ${fmtHM(monthSec / now.getDate())}`;
 
   const streak = calculateStreak();
   document.getElementById('kpiStreak').textContent = streak + 'd';
-  document.getElementById('kpiStreakSub').textContent = streak === 0 ? 'empieza hoy' : 'días seguidos';
+  const streakSub = streak === 0 ? 'empieza hoy' : 'días seguidos';
+  document.getElementById('kpiStreakSub').textContent = streakSub;
+  const kpiStreakBig = document.getElementById('kpiStreakBig');
+  const kpiStreakSubBig = document.getElementById('kpiStreakSubBig');
+  if (kpiStreakBig) kpiStreakBig.textContent = streak + 'd';
+  if (kpiStreakSubBig) kpiStreakSubBig.textContent = streakSub;
 
   document.getElementById('monthEyebrow').textContent = `${MONTHS[now.getMonth()]} ${now.getFullYear()}`;
 
@@ -2160,6 +2743,7 @@ renderTimerStage();
 restoreTimer();
 updateHeaderPill();
 updateRunningRibbon();
+updateSidebarRunning();
 
 window.addEventListener('beforeunload', saveState);
 </script>
